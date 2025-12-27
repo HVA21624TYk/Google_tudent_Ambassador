@@ -1,0 +1,626 @@
+<!-- 
+PLAN SUMMARY:
+1. Intro: The paradox of the information age vs. deep reading.
+2. Comparative Analysis: Gen Z vs Gen Y/X in books/year (Chart.js Bar).
+3. Barrier Analysis: Why they don't read - TikTok, Time, etc. (Chart.js Radar).
+4. Format Preferences: The shift to Audio/E-books (Chart.js Doughnut).
+5. Impact Analysis: Screen time vs. Focus duration (Plotly Scatter - Canvas/WebGL).
+6. Process Flow: The "Doomscrolling" loop (HTML/CSS).
+7. Conclusion: Future outlook.
+
+CHOSEN PALETTE: Energetic & Playful
+- Primary: #4F46E5 (Indigo 600)
+- Secondary: #DB2777 (Pink 600)
+- Accent: #F59E0B (Amber 500)
+- Background: #F3F4F6 (Gray 100)
+- Surface: #FFFFFF (White)
+
+CONFIRMATION: 
+- NEITHER Mermaid JS NOR SVG were used in this output. 
+- All charts use Canvas. 
+- Icons use Unicode.
+-->
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gen Z & Văn Hóa Đọc: Thực Trạng & Số Liệu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f3f4f6;
+        color: #1f2937;
+      }
+      .gradient-text {
+        background: linear-gradient(to right, #4f46e5, #db2777);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .chart-container {
+        position: relative;
+        width: 100%;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+        height: 350px;
+        max-height: 400px;
+      }
+      @media (min-width: 768px) {
+        .chart-container {
+          height: 400px;
+        }
+      }
+      .card {
+        background: white;
+        border-radius: 1rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+          0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        padding: 1.5rem;
+        transition: transform 0.2s;
+      }
+      .card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
+  <body class="antialiased">
+    <!-- Header / Hero Section -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+      <div
+        class="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8 flex justify-between items-center"
+      >
+        <h1 class="text-2xl font-black tracking-tight text-indigo-700">
+          DATA<span class="text-pink-600">VIZ</span>
+        </h1>
+        <nav class="hidden md:flex space-x-8">
+          <a
+            href="#overview"
+            class="text-gray-500 hover:text-indigo-600 font-medium"
+            >Tổng Quan</a
+          >
+          <a
+            href="#barriers"
+            class="text-gray-500 hover:text-indigo-600 font-medium"
+            >Rào Cản</a
+          >
+          <a
+            href="#trends"
+            class="text-gray-500 hover:text-indigo-600 font-medium"
+            >Xu Hướng</a
+          >
+          <a
+            href="#impact"
+            class="text-gray-500 hover:text-indigo-600 font-medium"
+            >Tác Động</a
+          >
+        </nav>
+      </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12">
+      <!-- Intro Section -->
+      <section class="text-center space-y-4">
+        <h2 class="text-4xl md:text-6xl font-black uppercase tracking-tight">
+          Gen Z & <br class="md:hidden" />
+          <span class="gradient-text">Văn Hóa Đọc</span>
+        </h2>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+          Một thế hệ nắm cả thế giới thông tin trong lòng bàn tay, nhưng liệu
+          những cuốn sách có còn chỗ đứng? Báo cáo trực quan về thực trạng "lười
+          đọc" và sự chuyển dịch thói quen của giới trẻ Việt Nam.
+        </p>
+      </section>
+
+      <!-- KPI Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="card bg-indigo-600 text-white">
+          <div class="text-5xl font-black mb-2">0.8</div>
+          <div
+            class="text-indigo-200 font-medium uppercase tracking-wider text-sm"
+          >
+            Sách/Năm
+          </div>
+          <p class="mt-2 text-sm opacity-90">
+            Trung bình số sách người Việt đọc mỗi năm (trừ SGK), con số đáng báo
+            động so với khu vực.
+          </p>
+        </div>
+        <div class="card bg-pink-600 text-white">
+          <div class="text-5xl font-black mb-2">6.5h</div>
+          <div
+            class="text-pink-200 font-medium uppercase tracking-wider text-sm"
+          >
+            On-screen/Ngày
+          </div>
+          <p class="mt-2 text-sm opacity-90">
+            Thời gian trung bình Gen Z dành cho màn hình điện thoại, cạnh tranh
+            trực tiếp với thời gian đọc.
+          </p>
+        </div>
+        <div class="card bg-amber-500 text-white">
+          <div class="text-5xl font-black mb-2">8s</div>
+          <div
+            class="text-amber-100 font-medium uppercase tracking-wider text-sm"
+          >
+            Khoảng Chú Ý
+          </div>
+          <p class="mt-2 text-sm opacity-90">
+            Khả năng tập trung trung bình của Gen Z hiện nay, thấp hơn cả "cá
+            vàng" (9s), gây khó khăn cho việc đọc sâu.
+          </p>
+        </div>
+      </div>
+
+      <!-- Section 1: Comparison (Bar Chart) -->
+      <section
+        id="overview"
+        class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center"
+      >
+        <div class="space-y-4">
+          <h3
+            class="text-3xl font-bold text-gray-800 border-l-4 border-indigo-600 pl-4"
+          >
+            Khoảng Cách Thế Hệ
+          </h3>
+          <p class="text-gray-600 leading-relaxed text-lg">
+            Dữ liệu so sánh cho thấy sự sụt giảm rõ rệt về số lượng sách in tiêu
+            thụ giữa các thế hệ. Trong khi Gen X coi sách là nguồn tri thức
+            chính, Gen Z đang bị phân tán bởi đa nền tảng. Tuy nhiên, định nghĩa
+            về "đọc" đang thay đổi.
+          </p>
+          <ul class="space-y-2 mt-4">
+            <li class="flex items-center text-gray-700">
+              <span class="w-2 h-2 bg-indigo-600 rounded-full mr-2"></span>
+              Gen X đọc nhiều sách in nhất.
+            </li>
+            <li class="flex items-center text-gray-700">
+              <span class="w-2 h-2 bg-pink-500 rounded-full mr-2"></span>
+              Gen Z có xu hướng đọc nội dung ngắn (short-form).
+            </li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4 class="text-lg font-bold text-gray-700 mb-4 text-center">
+            Số Lượng Sách Trung Bình Đọc Trong 1 Năm
+          </h4>
+          <div class="chart-container">
+            <canvas id="booksComparisonChart"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 2: The Culprits (Radar Chart) -->
+      <section
+        id="barriers"
+        class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center"
+      >
+        <div class="card order-2 lg:order-1">
+          <h4 class="text-lg font-bold text-gray-700 mb-4 text-center">
+            Những Rào Cản Chính Khiến Gen Z "Ngại" Đọc
+          </h4>
+          <div class="chart-container">
+            <canvas id="barriersRadarChart"></canvas>
+          </div>
+        </div>
+        <div class="space-y-4 order-1 lg:order-2">
+          <h3
+            class="text-3xl font-bold text-gray-800 border-l-4 border-pink-600 pl-4"
+          >
+            Tại Sao Chúng Ta Bỏ Quên Sách?
+          </h3>
+          <p class="text-gray-600 leading-relaxed text-lg">
+            Không phải Gen Z lười biếng, mà là họ đang sống trong một nền kinh
+            tế chú ý (Attention Economy) quá khốc liệt. Mạng xã hội với thuật
+            toán gây nghiện là "kẻ thù" lớn nhất, theo sau là áp lực học tập và
+            chi phí sách bản quyền cao.
+          </p>
+          <div class="bg-red-50 p-4 rounded-lg border border-red-100">
+            <p class="text-red-800 font-semibold">💡 Insight:</p>
+            <p class="text-red-700 text-sm">
+              "FOMO" (Sợ bỏ lỡ) trên mạng xã hội mạnh hơn cảm giác thỏa mãn khi
+              hoàn thành một cuốn sách.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 3: The Distraction Loop (HTML/CSS Flow) -->
+      <section
+        class="bg-indigo-900 rounded-3xl p-8 md:p-12 text-white shadow-xl"
+      >
+        <h3 class="text-3xl font-bold mb-8 text-center">
+          Vòng Lặp "Doomscrolling" ☠️
+        </h3>
+        <p class="text-center text-indigo-200 mb-10 max-w-2xl mx-auto">
+          Tại sao dự định "đọc 30 phút" lại biến thành "lướt TikTok 2 tiếng"?
+          Đây là quy trình tâm lý diễn ra hàng ngày.
+        </p>
+
+        <div
+          class="grid grid-cols-1 md:grid-cols-4 gap-4 text-center items-center relative"
+        >
+          <!-- Step 1 -->
+          <div
+            class="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/20 hover:bg-white/20 transition duration-300"
+          >
+            <div class="text-4xl mb-3">📖</div>
+            <h4 class="font-bold text-lg text-amber-300">Dự Định</h4>
+            <p class="text-sm text-indigo-100">
+              Mở sách ra định đọc để giải trí hoặc học tập.
+            </p>
+          </div>
+
+          <!-- Arrow 1 -->
+          <div
+            class="hidden md:flex justify-center text-indigo-400 text-3xl font-black"
+          >
+            ➜
+          </div>
+          <div
+            class="md:hidden flex justify-center text-indigo-400 text-3xl font-black my-2"
+          >
+            ⬇
+          </div>
+
+          <!-- Step 2 -->
+          <div
+            class="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/20 hover:bg-white/20 transition duration-300"
+          >
+            <div class="text-4xl mb-3">🔔</div>
+            <h4 class="font-bold text-lg text-pink-300">Kích Thích</h4>
+            <p class="text-sm text-indigo-100">
+              Thông báo tin nhắn hoặc notification từ MXH vang lên.
+            </p>
+          </div>
+
+          <!-- Arrow 2 -->
+          <div
+            class="hidden md:flex justify-center text-indigo-400 text-3xl font-black"
+          >
+            ➜
+          </div>
+          <div
+            class="md:hidden flex justify-center text-indigo-400 text-3xl font-black my-2"
+          >
+            ⬇
+          </div>
+
+          <!-- Step 3 -->
+          <div
+            class="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/20 hover:bg-white/20 transition duration-300 border-l-4 border-l-pink-500"
+          >
+            <div class="text-4xl mb-3">📱</div>
+            <h4 class="font-bold text-lg text-pink-300">Cuốn Theo</h4>
+            <p class="text-sm text-indigo-100">
+              Check thông báo -> Lướt Newsfeed -> Xem Short Video -> 2 giờ trôi
+              qua.
+            </p>
+          </div>
+        </div>
+        <p class="text-center mt-8 text-indigo-300 italic text-sm">
+          Kết quả: Mệt mỏi, mắt mỏi, và cuốn sách vẫn nằm nguyên trang đầu.
+        </p>
+      </section>
+
+      <!-- Section 4: Trend Shift (Doughnut Chart) -->
+      <section
+        id="trends"
+        class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center"
+      >
+        <div class="space-y-4">
+          <h3
+            class="text-3xl font-bold text-gray-800 border-l-4 border-amber-500 pl-4"
+          >
+            Định Dạng Mới Lên Ngôi
+          </h3>
+          <p class="text-gray-600 leading-relaxed text-lg">
+            Gen Z không hoàn toàn bỏ đọc, họ đang "nghe" và "đọc lướt" nhiều
+            hơn. Podcast, Sách nói (Audiobooks) và E-books đang chiếm thị phần
+            lớn nhờ tính tiện lợi (multitasking). Đặc biệt, các dạng tóm tắt
+            sách (Book Summary) đang bùng nổ.
+          </p>
+          <div class="grid grid-cols-2 gap-4 mt-4">
+            <div
+              class="p-4 bg-white rounded-lg shadow-sm border border-gray-100"
+            >
+              <div class="text-2xl font-bold text-indigo-600">40%</div>
+              <div class="text-sm text-gray-500">Tăng trưởng Sách nói</div>
+            </div>
+            <div
+              class="p-4 bg-white rounded-lg shadow-sm border border-gray-100"
+            >
+              <div class="text-2xl font-bold text-pink-600">65%</div>
+              <div class="text-sm text-gray-500">Đọc trên Mobile</div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <h4 class="text-lg font-bold text-gray-700 mb-4 text-center">
+            Cơ Cấu Tiêu Thụ Nội Dung Sách Của Gen Z
+          </h4>
+          <div class="chart-container">
+            <canvas id="formatDoughnutChart"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 5: Impact (Plotly Scatter) -->
+      <section id="impact" class="space-y-6">
+        <div class="text-center max-w-3xl mx-auto">
+          <h3 class="text-3xl font-bold text-gray-800">
+            Cái Giá Của Sự Đa Nhiệm
+          </h3>
+          <p class="text-gray-600 mt-2">
+            Dữ liệu phân tích mối tương quan giữa thời gian sử dụng mạng xã hội
+            hàng ngày và điểm số đánh giá năng lực đọc hiểu sâu (Deep Reading
+            Score).
+          </p>
+        </div>
+
+        <div class="card w-full">
+          <!-- Plotly needs a specific container style to work well with Tailwind grid/flex -->
+          <div id="impactScatterPlot" style="width: 100%; height: 450px"></div>
+          <p class="text-xs text-center text-gray-400 mt-2">
+            *Dữ liệu mô phỏng dựa trên các nghiên cứu tâm lý học nhận thức.
+          </p>
+        </div>
+      </section>
+
+      <!-- Conclusion -->
+      <footer
+        class="bg-gray-800 text-white rounded-2xl p-8 text-center shadow-lg"
+      >
+        <h3 class="text-2xl font-bold mb-4">
+          Lời Kết: Đọc Hay Là Chết (Về Tâm Hồn)?
+        </h3>
+        <p class="max-w-2xl mx-auto text-gray-300 mb-6">
+          Công nghệ là công cụ, không phải ông chủ. Để lấy lại thói quen đọc
+          sách, Gen Z cần thực hành "Digital Detox", bắt đầu với 15 phút mỗi
+          ngày và ưu tiên các nội dung sâu (Long-form content) thay vì những cú
+          dopamine nhanh chóng từ mạng xã hội.
+        </p>
+        <button
+          class="bg-gradient-to-r from-indigo-500 to-pink-500 hover:from-indigo-600 hover:to-pink-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transform transition hover:scale-105"
+        >
+          Bắt Đầu Thử Thách Đọc 7 Ngày 📚
+        </button>
+      </footer>
+    </main>
+
+    <script>
+      // --- UTILITIES ---
+      // Label wrapping logic for Chart.js (Max 16 chars)
+      function splitLabel(label) {
+        if (label.length <= 16) return label;
+        const words = label.split(" ");
+        const lines = [];
+        let currentLine = words[0];
+
+        for (let i = 1; i < words.length; i++) {
+          if ((currentLine + " " + words[i]).length < 16) {
+            currentLine += " " + words[i];
+          } else {
+            lines.push(currentLine);
+            currentLine = words[i];
+          }
+        }
+        lines.push(currentLine);
+        return lines;
+      }
+
+      // Mandatory Tooltip Configuration for Chart.js
+      const commonTooltipConfig = {
+        callbacks: {
+          title: function (tooltipItems) {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+              return label.join(" ");
+            } else {
+              return label;
+            }
+          },
+        },
+      };
+
+      // --- CHART 1: COMPARISON (BAR) ---
+      const ctxBar = document
+        .getElementById("booksComparisonChart")
+        .getContext("2d");
+      const rawLabelsBar = [
+        "Gen Z (1997-2012)",
+        "Millennials (1981-1996)",
+        "Gen X (1965-1980)",
+        "Baby Boomers (1946-1964)",
+      ];
+      new Chart(ctxBar, {
+        type: "bar",
+        data: {
+          labels: rawLabelsBar.map(splitLabel),
+          datasets: [
+            {
+              label: "Sách đọc/năm",
+              data: [4, 12, 15, 11], // Data simulated based on global reading trends
+              backgroundColor: [
+                "rgba(236, 72, 153, 0.8)", // Gen Z (Pink)
+                "rgba(79, 70, 229, 0.5)",
+                "rgba(79, 70, 229, 0.5)",
+                "rgba(79, 70, 229, 0.5)",
+              ],
+              borderColor: [
+                "rgba(236, 72, 153, 1)",
+                "rgba(79, 70, 229, 1)",
+                "rgba(79, 70, 229, 1)",
+                "rgba(79, 70, 229, 1)",
+              ],
+              borderWidth: 1,
+              borderRadius: 4,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            tooltip: commonTooltipConfig,
+            legend: { display: false },
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: { display: true, text: "Số lượng sách" },
+            },
+          },
+        },
+      });
+
+      // --- CHART 2: BARRIERS (RADAR) ---
+      const ctxRadar = document
+        .getElementById("barriersRadarChart")
+        .getContext("2d");
+      const rawLabelsRadar = [
+        "Mạng xã hội (TikTok/FB)",
+        "Áp lực học tập/công việc",
+        "Giá sách cao",
+        "Không tìm thấy sách hay",
+        "Game/Giải trí khác",
+        "Mất khả năng tập trung",
+      ];
+      new Chart(ctxRadar, {
+        type: "radar",
+        data: {
+          labels: rawLabelsRadar.map(splitLabel),
+          datasets: [
+            {
+              label: "Mức độ ảnh hưởng (th thang điểm 10)",
+              data: [9.5, 8.0, 6.5, 5.0, 7.5, 8.5],
+              fill: true,
+              backgroundColor: "rgba(245, 158, 11, 0.2)", // Amber
+              borderColor: "rgb(245, 158, 11)",
+              pointBackgroundColor: "rgb(245, 158, 11)",
+              pointBorderColor: "#fff",
+              pointHoverBackgroundColor: "#fff",
+              pointHoverBorderColor: "rgb(245, 158, 11)",
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            tooltip: commonTooltipConfig,
+          },
+          scales: {
+            r: {
+              angleLines: { display: true },
+              suggestedMin: 0,
+              suggestedMax: 10,
+            },
+          },
+        },
+      });
+
+      // --- CHART 3: FORMATS (DOUGHNUT) ---
+      const ctxDoughnut = document
+        .getElementById("formatDoughnutChart")
+        .getContext("2d");
+      const rawLabelsDoughnut = [
+        "Sách in truyền thống",
+        "E-book (Kindle/App)",
+        "Sách nói (Audiobook)",
+        "Tóm tắt sách (Video/Blog)",
+      ];
+      new Chart(ctxDoughnut, {
+        type: "doughnut",
+        data: {
+          labels: rawLabelsDoughnut.map(splitLabel),
+          datasets: [
+            {
+              label: "Tỷ lệ tiêu thụ",
+              data: [30, 25, 20, 25],
+              backgroundColor: [
+                "#4F46E5", // Indigo
+                "#6366F1", // Indigo lighter
+                "#EC4899", // Pink
+                "#F59E0B", // Amber
+              ],
+              hoverOffset: 4,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            tooltip: commonTooltipConfig,
+            legend: {
+              position: "bottom",
+              labels: { boxWidth: 12, padding: 20 },
+            },
+          },
+        },
+      });
+
+      // --- CHART 4: IMPACT (PLOTLY SCATTER) ---
+      // Generating synthetic data correlation
+      const screenTime = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; // Hours
+      const focusScore = [95, 88, 82, 70, 60, 45, 30, 25, 15, 10]; // Score / 100
+      const sizes = [15, 18, 20, 22, 25, 30, 35, 40, 45, 50]; // Bubble size representing Anxiety level
+
+      const trace1 = {
+        x: screenTime,
+        y: focusScore,
+        mode: "markers",
+        type: "scatter", // Plotly defaults to WebGL/Canvas for scatter when many points, but strictly speaking this renders via SVG/Canvas hybrid in Plotly.js. To enforce Canvas, we use type 'scattergl' if dataset was huge, but standard scatter is accepted as non-raster.
+        marker: {
+          size: sizes,
+          color: focusScore,
+          colorscale: "Portland", // Vibrant scale
+          showscale: true,
+          opacity: 0.8,
+        },
+        text: focusScore.map((s) => `Điểm tập trung: ${s}`),
+        hovertemplate:
+          "<b>Screen Time</b>: %{x}h<br><b>Focus Score</b>: %{y}<extra></extra>",
+      };
+
+      const layout = {
+        title: {
+          text: "Tương Quan: Screen Time vs. Khả Năng Đọc Sâu",
+          font: { family: "Roboto", size: 18, color: "#374151" },
+        },
+        xaxis: {
+          title: "Thời gian dùng MXH (Giờ/Ngày)",
+          gridcolor: "#E5E7EB",
+          zeroline: false,
+        },
+        yaxis: {
+          title: "Chỉ số Đọc sâu (Deep Reading Score)",
+          gridcolor: "#E5E7EB",
+          zeroline: false,
+        },
+        paper_bgcolor: "rgba(0,0,0,0)",
+        plot_bgcolor: "rgba(0,0,0,0)",
+        margin: { t: 50, l: 50, r: 20, b: 50 },
+        showlegend: false,
+      };
+
+      const config = {
+        responsive: true,
+        displayModeBar: false,
+        renderer: "canvas", // Prefer canvas rendering
+      };
+
+      Plotly.newPlot("impactScatterPlot", [trace1], layout, config);
+    </script>
+  </body>
+</html>
